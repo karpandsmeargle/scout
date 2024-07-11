@@ -1,0 +1,6 @@
+name: Scout
+version: 1.0.0
+main: io.karp.scout.Scout
+description: Implementing scout in vanilla
+author: karpandsmeargle
+api-version: '1.21'
