@@ -2,6 +2,7 @@ package io.karp.scout;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Location;
@@ -20,7 +21,7 @@ public class VolleyListener implements Listener {
     public static final double VOLLEY_MULT = 3.3;
     public static final double VOLLEY_CD = 20;
     private Set<Projectile> volleyProjectiles;
-    private HashMap<Player, Long> last_cast;
+    private Map<Player, Long> last_cast;
 
     public VolleyListener() {
         volleyProjectiles = new HashSet<Projectile>();
@@ -31,8 +32,10 @@ public class VolleyListener implements Listener {
     public void onProjectileLaunch(ProjectileLaunchEvent event) {
         ProjectileSource shooter = event.getEntity().getShooter();
         if (!(shooter instanceof Player)) return;
+        
         Player shootingPlayer = (Player) shooter;
         if (!shootingPlayer.isSneaking()) return;
+
         long currTime = shootingPlayer.getWorld().getFullTime();
         if (last_cast.containsKey(shootingPlayer) && currTime < last_cast.get(shootingPlayer) + VOLLEY_CD) return;
         last_cast.put(shootingPlayer, currTime);

@@ -21,7 +21,6 @@ public class SplitArrowListener implements Listener {
 
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        // Precondition: Player hitting something alive with a projectile
         if (!(
             event.getDamageSource().getDamageType() == DamageType.ARROW ||
             event.getDamageSource().getDamageType() == DamageType.TRIDENT
@@ -44,14 +43,14 @@ public class SplitArrowListener implements Listener {
     }
 
     public void procAbilityDamage(LivingEntity entity, EntityDamageByEntityEvent originalDamageEvent) {
-        double finalDamage = originalDamageEvent.getDamage() * SPLIT_ARROW_MULTIPLIER;
-        DamageSource cause = 
+        double splitDamage = originalDamageEvent.getDamage() * SPLIT_ARROW_MULTIPLIER;
+        DamageSource splitSource = 
             DamageSource.builder(DamageType.GENERIC)
                         .withCausingEntity(originalDamageEvent.getDamageSource().getCausingEntity())
                         .withDirectEntity(originalDamageEvent.getDamageSource().getDirectEntity())
                         .build();
 
-        entity.damage(finalDamage, cause);
+        entity.damage(splitDamage, splitSource);
     }
 
     public void drawParticleLine(Location a, Location b) {
@@ -60,10 +59,10 @@ public class SplitArrowListener implements Listener {
                         .subtract(a)
                         .toVector();
         double maxLength = delta.length();
-        Vector normalized_halved = delta.normalize().multiply(0.1);
+        Vector scaled_delta = delta.normalize().multiply(0.1);
         for (double interpolate = 0.0; interpolate < maxLength; interpolate += 0.1) {
             spawnPosition.getWorld().spawnParticle(Particle.CRIT, spawnPosition, 2, 0, 0, 0, 0);
-            spawnPosition.add(normalized_halved);
+            spawnPosition.add(scaled_delta);
         }
     }
 }
