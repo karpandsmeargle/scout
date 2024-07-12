@@ -11,6 +11,8 @@ public class Scout extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(this, this);
+        getServer().getPluginManager().registerEvents(new SplitArrowListener(), this);
+        getServer().getPluginManager().registerEvents(new VolleyListener(), this);
     }
 
     @EventHandler
